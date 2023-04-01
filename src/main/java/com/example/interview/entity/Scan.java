@@ -14,8 +14,12 @@ public class Scan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String data;
+    private String productId;
     private LocalDateTime timestamp;
+    private String type;
+    private String robotId;
+    private String barcode;
+    private String shelfLocation;
 
     // Getters and setters
     public Long getId() {
@@ -26,12 +30,12 @@ public class Scan {
         this.id = id;
     }
 
-    public String getData() {
-        return data;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public LocalDateTime getTimestamp() {
@@ -42,5 +46,35 @@ public class Scan {
         this.timestamp = timestamp;
     }
 
-}
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getRobotId() {
+        return robotId;
+    }
+
+    public void setRobotId(String robotId) {
+        this.robotId = robotId;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public String getShelfLocation() {
+        return shelfLocation;
+    }
+
+    public void setShelfLocation(String shelfLocation) {
+        this.shelfLocation = shelfLocation;
+    }
+}
