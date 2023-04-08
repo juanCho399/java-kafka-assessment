@@ -1,0 +1,16 @@
+
+- Use this url template to test end point implementation
+
+http://localhost:8088/scan/getByType/scan&2023-04-08T03:05:13.261&2023-04-08T03:06:10.960
+                     /scan/getByType/type&startDate&endDate
+
+- type, startDate and endDate are separated by &
+
+- case where startDate is not provided
+                     /scan/getByType/type&""&endDate
+
+- case where endDate is not provided
+                     /scan/getByType/type&startDate&""
+
+                     starDate -> year-mm-ddThh:mm:sss
+                     endDate -> year-mm-ddThh:mm:sss
