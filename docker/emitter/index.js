@@ -3,7 +3,7 @@ const {faker} = require('@faker-js/faker');
 
 const kafka = new Kafka({
     clientId: 'emitter-app',
-    brokers: ['localhost:9093']
+    brokers: ['kafka:9092']
 });
 
 const topicNameV1 = 'scan_topic_v1';
@@ -65,7 +65,7 @@ const sendRandomEventV2 = () => {
 }
 
 const getRandomInterval = (max) => {
-    return Math.floor(Math.random() * 1000 * max) + 1000;
+    return Math.floor(Math.random() * 1000 * max) + 10000;
 };
 
 const startSendingEvents = (maxAvailableFrecTime, sendRandomEvent) => {

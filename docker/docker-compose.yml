@@ -15,14 +15,13 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:19092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:19092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:19092,PLAINTEXT_HOST://0.0.0.0:9093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:19092,PLAINTEXT_HOST://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     ports:
-      - "9093:9093"
+      - "9092:9092"
     networks:
       - interview-network
 
@@ -37,16 +36,38 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:19092
     networks:
       - interview-network
+
+  interview:
+    image: interview
+    volumes:
+      - ./usr/app
+    depends_on:
+      - appjs
+    environment:
+      KAFKA_BROKER: kafka:9092
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/interviewapp
+      SPRING_DATASOURCE_USERNAME: someuser
+      SPRING_DATASOURCE_PASSWORD: somepassword
+      SPRING_JPA_HIBERNAT_DLL_AUTO: update
+    expose:
+      - 8081
+    ports:
+      - "8088:8088"
+    networks:
+      - interview-network
+
   appjs:
     build: ..
     volumes:
-      - .:/app
+      - ./emitter:/app
+      - /app/node_modules
     depends_on:
       - kafka
     environment:
       KAFKA_BROKER: kafka:9092
     networks:
       - interview-network
+
   db:
     image: postgres:latest
     restart: always
@@ -60,6 +81,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - interview-network
+
 networks:
   interview-network:
     driver: bridge
